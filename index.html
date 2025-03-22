@@ -5,69 +5,75 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #00cp23, #0072ff);
+            background: linear-gradient(135deg, #6D83F2, #47B2FF);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
         .container {
             background-color: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
             text-align: center;
             animation: fadeIn 0.8s;
         }
         input {
             padding: 15px;
             margin: 20px 0;
-            width: 100%;
-            border: 2px solid #0072ff;
+            width: 90%;
+            max-width: 360px;
+            border: 2px solid #47B2FF;
             border-radius: 10px;
             font-size: 16px;
             outline: none;
             transition: border-color 0.3s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         input:focus {
-            border-color: #00c6ff;
+            border-color: #6D83F2;
         }
         button {
             padding: 15px 30px;
-            background-color: #0072ff;
+            background-color: #47B2FF;
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 20px;
             transition: background-color 0.3s;
             width: 100%;
+            max-width: 360px;
         }
         button:hover {
-            background-color: #005bb5;
+            background-color: #1b83d6;
         }
         #upiLink, #copyButton {
             margin-top: 20px;
         }
         @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #0072ff;">UPI Intent Payment</h1>
+        <h1 style="color: #47B2FF;">UPI Intent Payment</h1>
         <input type="number" id="amount" placeholder="Enter amount (INR)" />
         <button onclick="generateLink()">Generate Payment Link</button>
 
         <br>
-        <a id="upiLink" href="#" style="display:none; text-decoration: none; color: #0072ff; margin-top: 20px;">Click here to Pay via UPI</a><br>
+        <a id="upiLink" href="#" style="display:none; text-decoration: none; color: #47B2FF; margin-top: 20px;">Click here to Pay via UPI</a><br>
         <button id="copyButton" style="display:none;">Copy Link</button>
     </div>
 
@@ -84,7 +90,6 @@
                 return;
             }
 
-            // Создаём intent-ссылку для ПАЙТМ
             const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end;`;
 
             const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
