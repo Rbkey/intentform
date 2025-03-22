@@ -27,6 +27,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #004d40;
@@ -35,17 +36,25 @@
             color: blue;
             text-decoration: underline;
         }
+        textarea {
+            width: 90%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Redirect Logger</h1>
-        <p>If you are not redirected automatically, click the button below:</p>
+        <p>If you are not redirected automatically, use the options below:</p>
         <button id="openLinkButton" style="display: none;">Open UPI Link</button>
-        <p id="loggedLink">Link will appear here...</p>
-        <br>
-        <p>Or manually copy the link and paste it into your UPI app:</p>
-        <textarea id="upiLinkText" rows="4" cols="50" readonly></textarea>
+        <br><br>
+        <a id="manualLink" href="#" style="display: none;">Click here to open UPI Link</a>
+        <br><br>
+        <p>Or copy the link and paste it into your UPI app:</p>
+        <textarea id="upiLinkText" rows="4" readonly></textarea>
     </div>
 
     <script>
@@ -56,18 +65,24 @@
             if (intentLink) {
                 console.log('Attempting to redirect to:', intentLink);
 
-                const loggedLink = document.getElementById('loggedLink');
                 const openLinkButton = document.getElementById('openLinkButton');
+                const manualLink = document.getElementById('manualLink');
                 const upiLinkText = document.getElementById('upiLinkText');
 
-                // Показываем ссылку и кнопку
-                loggedLink.innerHTML = `<a href="${intentLink}">${intentLink}</a>`;
+                // Показываем элементы
                 openLinkButton.style.display = 'block';
+                manualLink.style.display = 'block';
                 upiLinkText.value = intentLink;
+                manualLink.href = intentLink;
+                manualLink.innerText = 'Click here to open UPI Link';
 
-                // Устанавливаем действие на кнопку
+                // Обработка нажатия на кнопку
                 openLinkButton.onclick = () => {
-                    window.open(intentLink, '_self');
+                    try {
+                        window.location.href = intentLink;
+                    } catch (error) {
+                        alert('Failed to open UPI link directly. Try clicking the link below.');
+                    }
                 };
             }
         });
