@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #00c6aa, #0072ff);
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             margin: 0;
             padding: 0;
             display: flex;
@@ -84,8 +84,8 @@
                 return;
             }
 
-            // Создаём intent-ссылку, которая пробует открыть PhonePe, а если не получается, то Paytm
-            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;S.browser_fallback_url=https://paytm.com;end;`;
+            // Создаём intent-ссылку для ПАЙТМ
+            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end;`;
 
             const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
 
