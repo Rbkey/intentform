@@ -1,25 +1,66 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>UPI Intent Payment</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        input, button { padding: 10px; margin: 10px; font-size: 16px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            width: 80%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>UPI Intent Payment</h1>
+        <p>Enter Amount (INR):</p>
 
-    <h1>UPI Intent Payment</h1>
-    <p>Enter Amount (Тугрики):</p>
+        <input type="number" id="amount" placeholder="Enter amount" />
+        <button onclick="generateLink()">Pay Now</button>
 
-    <input type="number" id="amount" placeholder="Enter amount" />
-    <button onclick="generateLink()">Pay Now</button>
+        <br><br>
+        <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a>
 
-    <br><br>
-    <a id="upiLink" href="#" style="display:none; font-size: 18px; color: blue;">Click here to Pay via UPI</a>
-
-    <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
+        <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
+    </div>
 
     <script>
         function generateLink() {
@@ -47,10 +88,12 @@
 
             console.log('Generated UPI Link:', upiLink);
 
-            // Убираем автоматический редирект, оставляем ручную проверку
+            // Попытка открыть Intent-ссылку через JavaScript
+            setTimeout(() => {
+                window.location.href = upiLink;
+            }, 1000); // Задержка в 1 секунду
         }
     </script>
 
 </body>
 </html>
-
