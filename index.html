@@ -1,7 +1,62 @@
+Upi Intent Payment Page
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UPI Intent Paymentее</title>
+    <title>UPI Intent Payment</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         input, button { padding: 10px; margin: 10px; font-size: 16px; }
@@ -9,14 +64,16 @@
 </head>
 <body>
 
-    <h1>UPI Intent Paymentуу</h1>
-    <p>Enter Amount (INR):</p>
+    <h1>UPI Intent Payment</h1>
+    <p>Enter Amount (Тугрики):</p>
 
     <input type="number" id="amount" placeholder="Enter amount" />
     <button onclick="generateLink()">Pay Now</button>
 
     <br><br>
     <a id="upiLink" href="#" style="display:none; font-size: 18px; color: blue;">Click here to Pay via UPI</a>
+
+    <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
 
     <script>
         function generateLink() {
@@ -37,13 +94,17 @@
             const linkElement = document.getElementById('upiLink');
             linkElement.href = upiLink;
             linkElement.style.display = 'block';
+            linkElement.innerText = 'Click here to Pay via UPI';
+
+            const generatedLinkElement = document.getElementById('generatedLink');
+            generatedLinkElement.innerText = 'Generated Link: ' + upiLink;
 
             console.log('Generated UPI Link:', upiLink);
 
-            // Автоматически перенаправляем пользователя
-            window.location.href = upiLink;
+            // Убираем автоматический редирект, оставляем ручную проверку
         }
     </script>
 
 </body>
 </html>
+
