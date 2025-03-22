@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const intentLink = urlParams.get('link');
+            if (intentLink) {
+                // Попытка открыть Intent-ссылку через автоматический редирект
+                setTimeout(() => {
+                    window.location.href = intentLink;
+                }, 1000); // Задержка 1 секунда
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, <a id="manualLink" href="#">click here</a>.</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const intentLink = urlParams.get('link');
+            if (intentLink) {
+                const manualLink = document.getElementById('manualLink');
+                manualLink.href = intentLink;
+                manualLink.innerText = 'Click here to open UPI Link';
+            }
+        });
+    </script>
+</body>
+</html>
