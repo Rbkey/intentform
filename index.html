@@ -82,7 +82,7 @@
                 return;
             }
 
-            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end;`;
+            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;end;`;
 
             const redirectLink = `https://rbkey.github.io/intentform/redirect.html?link=${encodeURIComponent(intentLink)}`;
 
