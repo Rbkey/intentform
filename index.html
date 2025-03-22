@@ -33,9 +33,15 @@
             }
 
             const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR&url=${callbackURL}`;
+
             const linkElement = document.getElementById('upiLink');
             linkElement.href = upiLink;
             linkElement.style.display = 'block';
+
+            console.log('Generated UPI Link:', upiLink);
+
+            // Автоматически перенаправляем пользователя
+            window.location.href = upiLink;
         }
     </script>
 
