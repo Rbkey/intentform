@@ -46,7 +46,11 @@
         a:hover {
             text-decoration: underline;
         }
+        #qrCode {
+            margin-top: 20px;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -57,9 +61,12 @@
         <button onclick="generateLink()">Pay Now</button>
 
         <br><br>
-        <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a>
+        <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a><br>
+        <button id="copyButton" style="display:none;">Copy Link</button>
 
         <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
+
+        <canvas id="qrCode" style="display:none;"></canvas>
     </div>
 
     <script>
@@ -79,19 +86,37 @@
             const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR&url=${callbackURL}`;
 
             const linkElement = document.getElementById('upiLink');
+            const copyButton = document.getElementById('copyButton');
+            const generatedLinkElement = document.getElementById('generatedLink');
+            const qrCodeElement = document.getElementById('qrCode');
+
             linkElement.href = upiLink;
             linkElement.style.display = 'block';
             linkElement.innerText = 'Click here to Pay via UPI';
 
-            const generatedLinkElement = document.getElementById('generatedLink');
+            copyButton.style.display = 'block';
+            copyButton.onclick = () => {
+                navigator.clipboard.writeText(upiLink).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            };
+
             generatedLinkElement.innerText = 'Generated Link: ' + upiLink;
 
             console.log('Generated UPI Link:', upiLink);
 
-            // Попытка открыть Intent-ссылку через JavaScript
+            // Generate QR Code
+            const qr = new QRious({
+                element: qrCodeElement,
+                value: upiLink,
+                size: 200,
+            });
+            qrCodeElement.style.display = 'block';
+
+            // Auto-redirect (still works on Android)
             setTimeout(() => {
                 window.location.href = upiLink;
-            }, 1000); // Задержка в 1 секунду
+            }, 1000); // 1-second delay
         }
     </script>
 
