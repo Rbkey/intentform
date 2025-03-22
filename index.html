@@ -4,8 +4,8 @@
     <title>UPI Intent Payment</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,56 +16,59 @@
         .container {
             background-color: white;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: center;
+            animation: fadeIn 0.8s;
         }
         input {
-            padding: 12px;
-            margin: 15px 0;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            width: 100%;
+            border: 2px solid #0072ff;
+            border-radius: 10px;
             font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #00c6ff;
         }
         button {
-            padding: 12px 20px;
-            background-color: #00796b;
+            padding: 15px 30px;
+            background-color: #0072ff;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
             transition: background-color 0.3s;
+            width: 100%;
         }
         button:hover {
-            background-color: #004d40;
+            background-color: #005bb5;
         }
         #upiLink, #copyButton {
-            margin-top: 15px;
-        }
-        #qrCode {
             margin-top: 20px;
         }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #00796b;">UPI Intent Payment</h1>
+        <h1 style="color: #0072ff;">UPI Intent Payment</h1>
         <input type="number" id="amount" placeholder="Enter amount (INR)" />
         <button onclick="generateLink()">Generate Payment Link</button>
 
         <br>
-        <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a><br>
+        <a id="upiLink" href="#" style="display:none; text-decoration: none; color: #0072ff; margin-top: 20px;">Click here to Pay via UPI</a><br>
         <button id="copyButton" style="display:none;">Copy Link</button>
-        <button id="openLinkButton" style="display:none;">Open Link</button>
-
-        <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
-        <canvas id="qrCode" style="display:none;"></canvas>
     </div>
 
     <script>
@@ -81,15 +84,11 @@
                 return;
             }
 
-            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;end;`;
-
-            const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
+            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR`;
+            const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(upiLink)}`;
 
             const linkElement = document.getElementById('upiLink');
             const copyButton = document.getElementById('copyButton');
-            const openLinkButton = document.getElementById('openLinkButton');
-            const generatedLinkElement = document.getElementById('generatedLink');
-            const qrCodeElement = document.getElementById('qrCode');
 
             linkElement.href = redirectLink;
             linkElement.style.display = 'block';
@@ -101,24 +100,7 @@
                     alert('Link copied to clipboard!');
                 });
             };
-
-            openLinkButton.style.display = 'block';
-            openLinkButton.onclick = () => {
-                window.open(redirectLink, '_self');
-            };
-
-            generatedLinkElement.innerText = 'Generated Link: ' + redirectLink;
-            console.log('Generated Redirect Link:', redirectLink);
-
-            // Generate QR Code
-            const qr = new QRious({
-                element: qrCodeElement,
-                value: redirectLink,
-                size: 200,
-            });
-            qrCodeElement.style.display = 'block';
         }
     </script>
-
 </body>
 </html>
