@@ -84,8 +84,9 @@
                 return;
             }
 
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR`;
-            const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(upiLink)}`;
+            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end;`;
+
+            const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
 
             const linkElement = document.getElementById('upiLink');
             const copyButton = document.getElementById('copyButton');
