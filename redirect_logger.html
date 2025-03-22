@@ -62,12 +62,14 @@
                 const manualLink = document.getElementById('manualLink');
                 const upiLinkText = document.getElementById('upiLinkText');
 
+                // Показываем элементы
                 openLinkButton.style.display = 'block';
                 manualLink.style.display = 'block';
                 upiLinkText.value = intentLink;
                 manualLink.href = intentLink;
                 manualLink.innerText = 'Click here to open UPI Link';
 
+                // Попробуем открыть ссылку напрямую
                 openLinkButton.onclick = () => {
                     try {
                         window.location.href = intentLink;
@@ -75,6 +77,11 @@
                         alert('Failed to open UPI link directly. Try clicking the link below.');
                     }
                 };
+
+                // Автоматическая попытка редиректа (может быть заблокирована браузером)
+                setTimeout(() => {
+                    window.location.href = intentLink;
+                }, 1000);
             }
         });
     </script>
