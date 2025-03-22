@@ -2,27 +2,75 @@
 <html>
 <head>
     <title>Redirect Logger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Redirect Logger</h1>
+        <p>If you are not redirected automatically, click the button below:</p>
+        <button id="openLinkButton" style="display: none;">Open UPI Link</button>
+        <p id="loggedLink">Link will appear here...</p>
+        <br>
+        <p>Or manually copy the link and paste it into your UPI app:</p>
+        <textarea id="upiLinkText" rows="4" cols="50" readonly></textarea>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const intentLink = urlParams.get('link');
+            const intentLink = decodeURIComponent(urlParams.get('link'));
+
             if (intentLink) {
                 console.log('Attempting to redirect to:', intentLink);
-                document.getElementById('loggedLink').innerText = decodeURIComponent(intentLink);
 
-                // Автоматический редирект на Intent-ссылку (только если не iOS)
-                if (!navigator.userAgent.includes('iPhone') && !navigator.userAgent.includes('iPad')) {
-                    setTimeout(() => {
-                        window.location.href = intentLink;
-                    }, 2000); // Задержка 2 секунды
-                }
+                const loggedLink = document.getElementById('loggedLink');
+                const openLinkButton = document.getElementById('openLinkButton');
+                const upiLinkText = document.getElementById('upiLinkText');
+
+                // Показываем ссылку и кнопку
+                loggedLink.innerHTML = `<a href="${intentLink}">${intentLink}</a>`;
+                openLinkButton.style.display = 'block';
+                upiLinkText.value = intentLink;
+
+                // Устанавливаем действие на кнопку
+                openLinkButton.onclick = () => {
+                    window.open(intentLink, '_self');
+                };
             }
         });
     </script>
-</head>
-<body>
-    <h1>Redirect Logger</h1>
-    <p>If you are not redirected automatically, click the link below:</p>
-    <p><a id="loggedLink" href="#">Link will appear here...</a></p>
 </body>
 </html>
