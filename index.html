@@ -5,46 +5,47 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+            background-color: #e0f7fa;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            margin-top: 50px;
             background-color: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 90%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
             max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
+            text-align: center;
         }
-        input, button {
-            padding: 10px;
-            margin: 10px;
-            font-size: 16px;
+        input {
+            padding: 12px;
+            margin: 15px 0;
             width: 80%;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            border: 1px solid #ddd;
-            outline: none;
+            font-size: 16px;
         }
         button {
-            background-color: #4CAF50;
+            padding: 12px 20px;
+            background-color: #00796b;
             color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #004d40;
         }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+        #upiLink, #copyButton {
+            margin-top: 15px;
         }
         #qrCode {
             margin-top: 20px;
@@ -54,18 +55,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>UPI Intent Payment</h1>
-        <p>Enter Amount (INR):</p>
+        <h1 style="color: #00796b;">UPI Intent Payment</h1>
+        <input type="number" id="amount" placeholder="Enter amount (INR)" />
+        <button onclick="generateLink()">Generate Payment Link</button>
 
-        <input type="number" id="amount" placeholder="Enter amount" />
-        <button onclick="generateLink()">Pay Now</button>
-
-        <br><br>
+        <br>
         <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a><br>
         <button id="copyButton" style="display:none;">Copy Link</button>
+        <button id="openLinkButton" style="display:none;">Open Link</button>
 
         <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
-
         <canvas id="qrCode" style="display:none;"></canvas>
     </div>
 
@@ -87,6 +86,7 @@
 
             const linkElement = document.getElementById('upiLink');
             const copyButton = document.getElementById('copyButton');
+            const openLinkButton = document.getElementById('openLinkButton');
             const generatedLinkElement = document.getElementById('generatedLink');
             const qrCodeElement = document.getElementById('qrCode');
 
@@ -101,8 +101,12 @@
                 });
             };
 
-            generatedLinkElement.innerText = 'Generated Link: ' + upiLink;
+            openLinkButton.style.display = 'block';
+            openLinkButton.onclick = () => {
+                window.open(upiLink, '_self');
+            };
 
+            generatedLinkElement.innerText = 'Generated Link: ' + upiLink;
             console.log('Generated UPI Link:', upiLink);
 
             // Generate QR Code
