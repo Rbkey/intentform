@@ -5,49 +5,75 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            overflow: hidden;
         }
         .container {
-            text-align: center;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            animation: fadeIn 0.8s;
         }
         button {
-            padding: 10px 20px;
-            background-color: #00796b;
+            padding: 15px 30px;
+            background-color: #FF4B2B;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
+            margin-top: 20px;
             transition: background-color 0.3s;
+            width: 100%;
+            max-width: 360px;
         }
         button:hover {
-            background-color: #004d40;
+            background-color: #D63A2A;
         }
         a {
-            color: blue;
-            text-decoration: underline;
+            color: #FF4B2B;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+        }
+        textarea {
+            margin-top: 20px;
+            padding: 10px;
+            width: 90%;
+            max-width: 400px;
+            height: 100px;
+            border: 2px solid #FF4B2B;
+            border-radius: 10px;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Redirect Logger</h1>
+        <h1 style="color: #FF4B2B;">Redirect Logger</h1>
         <p>If you are not redirected automatically, use the options below:</p>
         <button id="openLinkButton" style="display: none;">Open UPI Link</button>
         <br><br>
         <a id="manualLink" href="#" style="display: none;">Click here to open UPI Link</a>
-        <br><br>
+        <br>
         <p>Or copy the link and paste it into your UPI app:</p>
-        <textarea id="upiLinkText" rows="4" readonly></textarea>
+        <textarea id="upiLinkText" readonly></textarea>
     </div>
 
     <script>
@@ -62,14 +88,12 @@
                 const manualLink = document.getElementById('manualLink');
                 const upiLinkText = document.getElementById('upiLinkText');
 
-                // Показываем элементы
                 openLinkButton.style.display = 'block';
                 manualLink.style.display = 'block';
                 upiLinkText.value = intentLink;
                 manualLink.href = intentLink;
                 manualLink.innerText = 'Click here to open UPI Link';
 
-                // Попробуем открыть ссылку напрямую
                 openLinkButton.onclick = () => {
                     try {
                         window.location.href = intentLink;
@@ -78,10 +102,9 @@
                     }
                 };
 
-                // Автоматическая попытка редиректа (может быть заблокирована браузером)
                 setTimeout(() => {
                     window.location.href = intentLink;
-                }, 1000);
+                }, 1500);
             }
         });
     </script>
