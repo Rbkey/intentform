@@ -1,124 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UPI Intent Payment</title>
+    <title>Redirect Logger</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            margin: 0;
-            padding: 0;
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
         .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
             text-align: center;
-        }
-        input {
-            padding: 12px;
-            margin: 15px 0;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         button {
-            padding: 12px 20px;
+            padding: 10px 20px;
             background-color: #00796b;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
             margin-top: 10px;
             transition: background-color 0.3s;
         }
         button:hover {
             background-color: #004d40;
         }
-        #upiLink, #copyButton {
-            margin-top: 15px;
-        }
-        #qrCode {
-            margin-top: 20px;
+        a {
+            color: blue;
+            text-decoration: underline;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #00796b;">UPI Intent Payment</h1>
-        <input type="number" id="amount" placeholder="Enter amount (INR)" />
-        <button onclick="generateLink()">Generate Payment Link</button>
-
-        <br>
-        <a id="upiLink" href="#" style="display:none;">Click here to Pay via UPI</a><br>
-        <button id="copyButton" style="display:none;">Copy Link</button>
-        <button id="openLinkButton" style="display:none;">Open Link</button>
-
-        <p id="generatedLink" style="margin-top: 20px; font-size: 14px; color: green;"></p>
-        <canvas id="qrCode" style="display:none;"></canvas>
+        <h1>Redirect Logger</h1>
+        <p>If you are not redirected automatically, use the options below:</p>
+        <button id="openLinkButton" style="display: none;">Open UPI Link</button>
+        <br><br>
+        <a id="manualLink" href="#" style="display: none;">Click here to open UPI Link</a>
+        <br><br>
+        <p>Or copy the link and paste it into your UPI app:</p>
+        <textarea id="upiLinkText" rows="4" readonly></textarea>
     </div>
 
     <script>
-        function generateLink() {
-            const amount = document.getElementById('amount').value;
-            const upiID = 'CFST20014647@CUB';
-            const merchantName = 'MyMerchant';
-            const transactionID = 'TXN' + Math.floor(Math.random() * 1000000);
-            const transactionRef = 'REF' + Math.floor(Math.random() * 1000000);
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const intentLink = decodeURIComponent(urlParams.get('link'));
 
-            if (!amount || amount <= 0) {
-                alert('Please enter a valid amount.');
-                return;
+            if (intentLink) {
+                console.log('Attempting to redirect to:', intentLink);
+
+                const openLinkButton = document.getElementById('openLinkButton');
+                const manualLink = document.getElementById('manualLink');
+                const upiLinkText = document.getElementById('upiLinkText');
+
+                openLinkButton.style.display = 'block';
+                manualLink.style.display = 'block';
+                upiLinkText.value = intentLink;
+                manualLink.href = intentLink;
+                manualLink.innerText = 'Click here to open UPI Link';
+
+                openLinkButton.onclick = () => {
+                    try {
+                        window.location.href = intentLink;
+                    } catch (error) {
+                        alert('Failed to open UPI link directly. Try clicking the link below.');
+                    }
+                };
             }
-
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR`;
-
-            const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(upiLink)}`;
-
-            const linkElement = document.getElementById('upiLink');
-            const copyButton = document.getElementById('copyButton');
-            const openLinkButton = document.getElementById('openLinkButton');
-            const generatedLinkElement = document.getElementById('generatedLink');
-            const qrCodeElement = document.getElementById('qrCode');
-
-            linkElement.href = redirectLink;
-            linkElement.style.display = 'block';
-            linkElement.innerText = 'Click here to Pay via UPI';
-
-            copyButton.style.display = 'block';
-            copyButton.onclick = () => {
-                navigator.clipboard.writeText(redirectLink).then(() => {
-                    alert('Link copied to clipboard!');
-                });
-            };
-
-            openLinkButton.style.display = 'block';
-            openLinkButton.onclick = () => {
-                window.open(redirectLink, '_self');
-            };
-
-            generatedLinkElement.innerText = 'Generated Link: ' + redirectLink;
-            console.log('Generated Redirect Link:', redirectLink);
-
-            // Generate QR Code
-            const qr = new QRious({
-                element: qrCodeElement,
-                value: redirectLink,
-                size: 200,
-            });
-            qrCodeElement.style.display = 'block';
-        }
+        });
     </script>
-
 </body>
 </html>
