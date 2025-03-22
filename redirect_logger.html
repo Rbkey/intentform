@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirect Logger</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const intentLink = urlParams.get('link');
+            if (intentLink) {
+                console.log('Attempting to redirect to:', intentLink);
+                document.getElementById('loggedLink').innerText = decodeURIComponent(intentLink);
+
+                // Автоматический редирект на Intent-ссылку (только если не iOS)
+                if (!navigator.userAgent.includes('iPhone') && !navigator.userAgent.includes('iPad')) {
+                    setTimeout(() => {
+                        window.location.href = intentLink;
+                    }, 2000); // Задержка 2 секунды
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Redirect Logger</h1>
+    <p>If you are not redirected automatically, click the link below:</p>
+    <p><a id="loggedLink" href="#">Link will appear here...</a></p>
+</body>
+</html>
