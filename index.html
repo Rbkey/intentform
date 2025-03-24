@@ -76,7 +76,7 @@
                 return;
             }
 
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&cu=INR&am=${amount}&tid=${txnId}&url=${encodeURIComponent(callbackUrl)}`;
+            const upiLink = `upi://pay?pa=${upiID}&cu=INR&am=${amount}&url=${encodeURIComponent(callbackUrl)}`;
 
             document.getElementById('upiLink').innerHTML = `<a href="${upiLink}">${upiLink}</a>`;
 
