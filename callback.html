@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UPI Callback Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #FF4B2B;
+            border-radius: 10px;
+            margin-top: 20px;
+            resize: none;
+            font-size: 14px;
+            outline: none;
+        }
+        h1 {
+            color: #FF4B2B;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #FF4B2B;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #CC3A2B;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UPI Callback Data</h1>
+        <textarea id="callbackData" readonly></textarea>
+        <button onclick="copyToClipboard()">Copy Data</button>
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            let result = '';
+            params.forEach((value, key) => {
+                result += `${key}: ${value}\n`;
+            });
+            return result || 'No callback data received.';
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('callbackData');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            alert('Callback data copied to clipboard!');
+        }
+
+        document.getElementById('callbackData').value = getQueryParams();
+    </script>
+</body>
+</html>
