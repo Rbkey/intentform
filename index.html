@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #2983F2, #47B2FF);
+            background: linear-gradient(135deg, #6D83F2, #47B2FF);
             margin: 0;
             padding: 0;
             display: flex;
@@ -74,7 +74,7 @@
                 return;
             }
 
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&cu=INR&am=${amount}&url=${encodeURIComponent(callbackUrl)}`;
+            const upiLink = `intent://pay?pa=${upiID}&pn=${merchantName}&cu=INR&am=${amount}&url=${encodeURIComponent(callbackUrl)}#Intent;scheme=upi;end;`;
             document.getElementById('upiLink').innerHTML = `<a href="${upiLink}">${upiLink}</a>`;
 
             const qr = new QRious({
