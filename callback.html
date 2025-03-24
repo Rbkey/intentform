@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UPI Callback Viewer</title>
+    <title>UPI Callback Data</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,90 +18,57 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            width: 100%;
+            width: 80%;
             max-width: 600px;
             text-align: center;
         }
         textarea {
             width: 100%;
-            height: 300px;
-            padding: 15px;
-            border: 2px solid #FF4B2B;
-            border-radius: 10px;
+            height: 200px;
+            padding: 10px;
+            border: 2px solid #FF416C;
+            border-radius: 5px;
             margin-top: 20px;
-            resize: none;
-            font-size: 14px;
-            outline: none;
-        }
-        h1 {
-            color: #FF4B2B;
         }
         button {
+            margin-top: 10px;
             padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #FF4B2B;
+            background-color: #FF416C;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #CC3A2B;
+            background-color: #D13A57;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>UPI Callback Data</h1>
-        <textarea id="callbackData" readonly></textarea>
-        <button onclick="copyToClipboard()">Copy Data</button>
-        <button onclick="viewSavedData()">View Saved Data</button>
+        <textarea id="callbackData">No callback data received.</textarea>
+        <br>
+        <button onclick="copyData()">Copy Data</button>
     </div>
 
     <script>
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            let result = '';
-            params.forEach((value, key) => {
-                result += `${key}: ${value}\n`;
-            });
-            return result || 'No callback data received.';
-        }
-
-        function copyToClipboard() {
+        function copyData() {
             const textarea = document.getElementById('callbackData');
             textarea.select();
-            textarea.setSelectionRange(0, 99999);
             document.execCommand('copy');
-            alert('Callback data copied to clipboard!');
+            alert('Data copied to clipboard!');
         }
 
-        function saveData(data) {
-            let savedData = localStorage.getItem('callbackLogs') || '';
-            savedData += data + '\n--------------------\n';
-            localStorage.setItem('callbackLogs', savedData);
-        }
+        const params = new URLSearchParams(window.location.search);
+        const txnId = params.get('tid');
 
-        function viewSavedData() {
-            const savedData = localStorage.getItem('callbackLogs') || 'No saved data found.';
-            alert(savedData);
+        if (txnId) {
+            const savedData = localStorage.getItem(txnId);
+            if (savedData) {
+                document.getElementById('callbackData').value = savedData;
+            }
         }
-
-        function sendToServer(data) {
-            fetch('https://example.com/callback_logger', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ data: data })
-            }).then(response => console.log('Data sent to server')).catch(error => console.log('Error sending data:', error));
-        }
-
-        const data = getQueryParams();
-        document.getElementById('callbackData').value = data;
-        saveData(data);
-        sendToServer(data);
     </script>
 </body>
 </html>
