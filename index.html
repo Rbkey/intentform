@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #6D80F9, #47B2FF);
+            background: linear-gradient(135deg, #6D83F2, #47B2FF);
             margin: 0;
             padding: 0;
             display: flex;
@@ -68,13 +68,12 @@
             const amount = document.getElementById('amount').value;
             const upiID = 'CFST20014647@CUB';
             const merchantName = 'aa';
-            const callbackUrl = 'https://rbkey.github.io/intentform/callback.html';
             if (!amount || amount <= 0) {
                 alert('Please enter a valid amount.');
                 return;
             }
 
-            const upiLink = `intent://pay?pa=${upiID}&pn=${merchantName}&cu=INR&am=${amount}&url=${encodeURIComponent(callbackUrl)}#Intent;scheme=upi;end;`;
+            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&cu=INR&am=${amount}`;
             document.getElementById('upiLink').innerHTML = `<a href="${upiLink}">${upiLink}</a>`;
 
             const qr = new QRious({
