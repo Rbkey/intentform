@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1D83F2, #47B2FF);
+            background: linear-gradient(135deg, #6D83F2, #47B2FF);
             margin: 0;
             padding: 0;
             display: flex;
@@ -80,8 +80,8 @@
     <script>
         async function generateLink() {
             const amount = document.getElementById('amount').value;
-            const upiID = 'rxgpazc5colc@mahb';
-            const merchantName = 'Thirumala services';
+            const upiID = 'CFST20014647@CUB';
+            const merchantName = 'VR ASSOCIATES';
             const transactionID = 'TXN' + Math.floor(Math.random() * 1000000);
             const transactionRef = 'REF' + Math.floor(Math.random() * 1000000);
 
@@ -90,7 +90,7 @@
                 return;
             }
 
-            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end;`;
+            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Hi&am=${amount}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end;`;
 
             const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
 
