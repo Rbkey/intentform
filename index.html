@@ -84,13 +84,14 @@
             const merchantName = 'MyMerchant';
             const transactionID = 'TXN' + Math.floor(Math.random() * 1000000);
             const transactionRef = 'REF' + Math.floor(Math.random() * 1000000);
+            const callbackUrl = 'https://rbkey.github.io/intentform/callback.html';
 
             if (!amount || amount <= 0) {
                 alert('Please enter a valid amount.');
                 return;
             }
 
-            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end;`;
+            const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR&url=${encodeURIComponent(callbackUrl)}#Intent;scheme=upi;package=net.one97.paytm;end;`;
 
             const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
 
