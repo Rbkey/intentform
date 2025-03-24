@@ -2,32 +2,47 @@
 <html>
 <head>
     <title>Redirecting...</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const intentLink = urlParams.get('link');
-            if (intentLink) {
-                // Попытка открыть Intent-ссылку через автоматический редирект
-                setTimeout(() => {
-                    window.location.href = intentLink;
-                }, 1000); // Задержка 1 секунда
-            }
-        });
-    </script>
+    <style>
+        body {
+            background-color: #F2C94C;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Redirecting...</h1>
-    <p>If you are not redirected automatically, <a id="manualLink" href="#">click here</a>.</p>
+    <div>
+        <h1>Redirecting...</h1>
+        <p>If you are not redirected automatically, <a id="callbackLink" href="callback.html">click here</a>.</p>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const intentLink = urlParams.get('link');
-            if (intentLink) {
-                const manualLink = document.getElementById('manualLink');
-                manualLink.href = intentLink;
-                manualLink.innerText = 'Click here to open UPI Link';
-            }
-        });
+        const params = new URLSearchParams(window.location.search);
+        const txnId = params.get('tid');
+
+        if (txnId) {
+            // Сохранение данных в localStorage
+            localStorage.setItem(txnId, JSON.stringify({ status: 'Pending', callbackReceivedAt: new Date().toISOString() }));
+
+            // Отправка запроса на сервер Replit
+            fetch('https://434e40ea-c804-492f-abf6-37c4ff1ded1a-00-35tro69y1qu6j.riker.replit.dev/upi-callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ txnId: txnId, status: 'Pending', source: 'redirect.html' })
+            }).then(response => response.text()).then(console.log);
+        }
+
+        // Автоматическая переадресация на callback.html
+        setTimeout(() => {
+            window.location.href = 'callback.html';
+        }, 3000);
     </script>
 </body>
 </html>
