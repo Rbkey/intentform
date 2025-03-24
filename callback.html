@@ -56,6 +56,7 @@
         <h1>UPI Callback Data</h1>
         <textarea id="callbackData" readonly></textarea>
         <button onclick="copyToClipboard()">Copy Data</button>
+        <button onclick="viewSavedData()">View Saved Data</button>
     </div>
 
     <script>
@@ -76,7 +77,31 @@
             alert('Callback data copied to clipboard!');
         }
 
-        document.getElementById('callbackData').value = getQueryParams();
+        function saveData(data) {
+            let savedData = localStorage.getItem('callbackLogs') || '';
+            savedData += data + '\n--------------------\n';
+            localStorage.setItem('callbackLogs', savedData);
+        }
+
+        function viewSavedData() {
+            const savedData = localStorage.getItem('callbackLogs') || 'No saved data found.';
+            alert(savedData);
+        }
+
+        function sendToServer(data) {
+            fetch('https://example.com/callback_logger', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: data })
+            }).then(response => console.log('Data sent to server')).catch(error => console.log('Error sending data:', error));
+        }
+
+        const data = getQueryParams();
+        document.getElementById('callbackData').value = data;
+        saveData(data);
+        sendToServer(data);
     </script>
 </body>
 </html>
