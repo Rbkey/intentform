@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6D13R2, #47B2FF);
+            background: linear-gradient(135deg, #6D83F2, #47B2FF);
             margin: 0;
             padding: 0;
             display: flex;
@@ -78,7 +78,19 @@
     </div>
 
     <script>
-        function generateLink() {
+        async function shortenUrl(longUrl) {
+            try {
+                const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                if (response.ok) {
+                    return await response.text();
+                }
+                return longUrl;  // Если не удалось сократить
+            } catch (error) {
+                return longUrl;
+            }
+        }
+
+        async function generateLink() {
             const amount = document.getElementById('amount').value;
             const upiID = 'CFST20014647@CUB';
             const merchantName = 'MyMerchant';
@@ -92,19 +104,20 @@
             }
 
             const intentLink = `intent://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionID}&tr=${transactionRef}&tn=Deposit Payment&am=${amount}&cu=INR&url=${encodeURIComponent(callbackUrl)}#Intent;scheme=upi;package=net.one97.paytm;end;`;
-
             const redirectLink = `https://rbkey.github.io/intentform/redirect_logger.html?link=${encodeURIComponent(intentLink)}`;
+
+            const shortenedLink = await shortenUrl(redirectLink);
 
             const linkElement = document.getElementById('upiLink');
             const copyButton = document.getElementById('copyButton');
 
-            linkElement.href = redirectLink;
+            linkElement.href = shortenedLink;
             linkElement.style.display = 'block';
             linkElement.innerText = 'Click here to Pay via UPI';
 
             copyButton.style.display = 'block';
             copyButton.onclick = () => {
-                navigator.clipboard.writeText(redirectLink).then(() => {
+                navigator.clipboard.writeText(shortenedLink).then(() => {
                     alert('Link copied to clipboard!');
                 });
             };
