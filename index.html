@@ -1,93 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UPI Payment Link Generator</title>
+    <meta charset="UTF-8">
+    <title>Vodafone Cash Deposit Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, yellow, #2980B9);
-            margin: 0;
-            padding: 0;
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
-        .container {
+        .form-container {
             background-color: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
         }
-        input {
+        input[type="text"] {
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            width: calc(100% - 20px);
-            border: 2px solid #6DD5FA;
+            margin-top: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 14px;
+        }
+        input[type="file"] {
+            margin-top: 10px;
         }
         button {
-            padding: 10px 20px;
-            background-color: #2980B9;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
-        button:hover {
-            background-color: #1A5276;
+        button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
         }
-        #upiLink {
-            margin-top: 20px;
-            color: #2980B9;
-            word-break: break-all;
+        label {
+            font-size: 14px;
+            color: grey;
         }
-        #qrCode {
-            margin-top: 20px;
+        .error {
+            color: red;
+            margin-top: 10px;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>UPI Payment Link Generator</h1>
-        <input type="text" id="amount" placeholder="Enter amount (INR)" />
-        <button onclick="generateLink()">Generate Link & QR Code</button>
+    <div class="form-container">
+        <h2>Vodafone Cash Deposit</h2>
+        <label for="deposit-amount">Deposit Amount</label>
+        <input type="text" id="deposit-amount" placeholder="15 EGP" disabled>
 
-        <div id="upiLink"></div>
-        <canvas id="qrCode"></canvas>
+        <label for="vodafone-number">Vodafone Cash Number</label>
+        <input type="text" id="vodafone-number" placeholder="22222222222" disabled>
+
+        <label for="payer-wallet">11 Digits</label>
+        <input type="text" id="payer-wallet" placeholder="11 Digits">
+        <div id="error-number" class="error"></div>
+
+        <label for="screenshot">Payment confirmation screenshot (JPG, PNG, JPEG, PDF, Max size 20MB)</label>
+        <input type="file" id="screenshot" accept="image/png, image/jpeg, application/pdf">
+        <div id="error-file" class="error"></div>
+
+        <button id="confirm-btn" disabled>Confirm Deposit</button>
+
+        <div class="payment-guide">
+            <h3>Payment Guide:</h3>
+            <ol>
+                <li>Copy the VF-Cash number from the deposit page.</li>
+                <li>Open your payment app and transfer the amount to the copied VF-Cash number and click Confirm.</li>
+                <li>Upload a confirmation file of the completed transaction and click "Confirm Deposit".</li>
+            </ol>
+        </div>
     </div>
 
     <script>
-        function generateLink() {
-            const amount = document.getElementById('amount').value;
-            const upiID = 'CFST20014647@CUB';
-            const merchantName = 'VR ASSOCIATES';
-            const callbackUrl = 'https://rbkey.github.io/intentform/redirect.html';
-            const txnId = 'Txn_' + Date.now();
+        const confirmBtn = document.getElementById('confirm-btn');
+        const payerWallet = document.getElementById('payer-wallet');
+        const screenshot = document.getElementById('screenshot');
+        const errorNumber = document.getElementById('error-number');
+        const errorFile = document.getElementById('error-file');
 
-            if (!amount || amount <= 0) {
-                alert('Please enter a valid amount.');
-                return;
+        payerWallet.addEventListener('input', () => {
+            if (payerWallet.value.length === 11 && screenshot.files.length > 0) {
+                confirmBtn.disabled = false;
+            } else {
+                confirmBtn.disabled = true;
             }
+        });
 
-            const upiLink = `upi://pay?pa=${upiID}&cu=INR&am=${amount}&url=${encodeURIComponent(callbackUrl)}`;
-
-            document.getElementById('upiLink').innerHTML = `<a href="${upiLink}">${upiLink}</a>`;
-
-            localStorage.setItem(txnId, JSON.stringify({ amount: amount, status: 'Pending', createdAt: new Date().toISOString() }));
-
-            const qr = new QRious({
-                element: document.getElementById('qrCode'),
-                value: upiLink,
-                size: 250
-            });
-        }
+        screenshot.addEventListener('change', () => {
+            if (payerWallet.value.length === 11 && screenshot.files.length > 0) {
+                confirmBtn.disabled = false;
+                errorFile.textContent = '';
+            } else {
+                confirmBtn.disabled = true;
+                if (screenshot.files.length === 0) {
+                    errorFile.textContent = 'Please upload a payment confirmation screenshot.';
+                }
+            }
+        });
     </script>
 </body>
 </html>
