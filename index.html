@@ -1,114 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Vodafone Cash Deposit Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 400px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="file"] {
-            margin-top: 10px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:disabled {
-            background-color: grey;
-            cursor: not-allowed;
-        }
-        label {
-            font-size: 14px;
-            color: grey;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h2>Vodafone Cash Deposit</h2>
-        <label for="deposit-amount">Deposit Amount</label>
-        <input type="text" id="deposit-amount" placeholder="15 EGP" disabled>
-
-        <label for="vodafone-number">Vodafone Cash Number</label>
-        <input type="text" id="vodafone-number" placeholder="22222222222" disabled>
-
-        <label for="payer-wallet">11 Digits</label>
-        <input type="text" id="payer-wallet" placeholder="11 Digits">
-        <div id="error-number" class="error"></div>
-
-        <label for="screenshot">Payment confirmation screenshot (JPG, PNG, JPEG, PDF, Max size 20MB)</label>
-        <input type="file" id="screenshot" accept="image/png, image/jpeg, application/pdf">
-        <div id="error-file" class="error"></div>
-
-        <button id="confirm-btn" disabled>Confirm Deposit</button>
-
-        <div class="payment-guide">
-            <h3>Payment Guide:</h3>
-            <ol>
-                <li>Copy the VF-Cash number from the deposit page.</li>
-                <li>Open your payment app and transfer the amount to the copied VF-Cash number and click Confirm.</li>
-                <li>Upload a confirmation file of the completed transaction and click "Confirm Deposit".</li>
-            </ol>
-        </div>
+<div class="flex justify-center items-center min-h-screen bg-gray-200">
+  <div class="w-full max-w-lg bg-white shadow-xl rounded-xl p-6">
+    <div class="bg-gray-100 p-4 rounded-xl mb-4">
+      <h3 class="text-sm font-medium text-gray-800">Deposit Amount</h3>
+      <p class="text-lg font-bold">15 EGP</p>
     </div>
-
-    <script>
-        const confirmBtn = document.getElementById('confirm-btn');
-        const payerWallet = document.getElementById('payer-wallet');
-        const screenshot = document.getElementById('screenshot');
-        const errorNumber = document.getElementById('error-number');
-        const errorFile = document.getElementById('error-file');
-
-        payerWallet.addEventListener('input', () => {
-            if (payerWallet.value.length === 11 && screenshot.files.length > 0) {
-                confirmBtn.disabled = false;
-            } else {
-                confirmBtn.disabled = true;
-            }
-        });
-
-        screenshot.addEventListener('change', () => {
-            if (payerWallet.value.length === 11 && screenshot.files.length > 0) {
-                confirmBtn.disabled = false;
-                errorFile.textContent = '';
-            } else {
-                confirmBtn.disabled = true;
-                if (screenshot.files.length === 0) {
-                    errorFile.textContent = 'Please upload a payment confirmation screenshot.';
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+    <div class="bg-blue-100 p-4 rounded-xl mb-4 flex justify-between items-center">
+      <div>
+        <h3 class="text-sm font-medium text-gray-800">Vodafone Cash Number</h3>
+        <p class="text-lg font-bold">22222222222</p>
+      </div>
+      <button class="bg-white p-2 rounded-md shadow-md">
+        <img src="/copy-icon.png" alt="Copy Icon">
+      </button>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-red-600 mb-1" for="wallet-number">Your Vodafone Cash Number</label>
+      <input type="text" id="wallet-number" placeholder="11 Digits" class="block w-full p-2 border border-gray-300 rounded-md" />
+      <p class="text-sm text-red-600 mt-1">Incorrect Vodafone Cash Number cannot be blank.</p>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1" for="confirmation">Payment confirmation screenshot</label>
+      <div class="bg-gray-100 p-4 rounded-xl">
+        <input type="file" id="confirmation" accept=".jpg, .jpeg, .png, .pdf" class="block w-full mb-2" />
+        <p class="text-sm text-gray-600">JPG, JPEG, PNG, PDF, Max size 20MB</p>
+      </div>
+    </div>
+    <button class="bg-green-500 text-white w-full py-2 rounded-xl shadow-md">Confirm Deposit</button>
+    <div class="mt-6 text-sm text-gray-600">
+      <h4 class="font-bold mb-1">Payment guide:</h4>
+      <ol class="list-decimal list-inside">
+        <li>Copy the VF-Cash number from the deposit page.</li>
+        <li>Open your payment app and transfer the amount to the copied VF-Cash number and click Confirm.</li>
+        <li>Upload a confirmation file (JPG, PNG, JPEG, PDF, Max size 20MB) of the completed transaction and click "Confirm Deposit".</li>
+      </ol>
+    </div>
+  </div>
+</div>
